@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<!-- 移动端视口设置 -->
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maxinum-scale=1.0,mininum-scale=1.0,user-scalable=no">
+		<title>gshop</title>
+		<!-- 移动端浏览器样式重置 -->
+		<link rel="stylesheet" href="./static/css/reset.css">
+		<!-- 阿里矢量图标库 -->
+		<!-- <link rel="stylesheet" href="http://at.alicdn.com/t/font_1971447_11js0l4vu58.css"> -->
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_518606_6676bmcalnrhehfr.css"></link>
+		<!-- 解决点击响应0.3s的延迟 -->
+		<script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+		<script>
+		  if ('addEventListener' in document) {
+		    document.addEventListener('DOMContentLoaded', function() {
+		      FastClick.attach(document.body);
+		    }, false);
+		  }
+		  if(!window.Promise) {
+		    document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
+		  }
+		</script>
+	</head>
+	<body>
+		<div id="app"></div>
+		<!-- built files will be auto injected -->
+	</body>
+</html>
