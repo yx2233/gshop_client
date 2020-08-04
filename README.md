@@ -76,7 +76,15 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 2.通过动态class和$route.path来实现tab样式的改变
 3.通过阿里图标库，显示导航图标
 
-
-
-
+#回退到上一个界面
+	@click="$router.back()"   
+#决定要不要显示底部导航条
+	v-show="$route.mata" 
+	{
+		path:'/order',
+		component:Order,
+		mata:{
+			showFooter:true
+		}
+	},
 
