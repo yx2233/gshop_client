@@ -29,10 +29,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 5. npm run build 打包发布项目(编写代码完成之后)，会生成一个dist文件夹
 
 项目表述：
-	1）此项目为外卖Web App(SPA)
-	2）包括商家，商品，购物车，用户等多个子模块
-	3）使用vue全家桶+ES6+Webpack等前端最新最热技术
-	4）采用模块化，组件化，工程化的模块开发
+	1）此项目为外卖Web App(SPA)  
+	2）包括商家，商品，购物车，用户等多个子模块(功能)
+	3）使用vue全家桶+ES6+Webpack等前端最新最热技术(技术)
+	4）采用模块化，组件化，工程化的模块开发(开发模式)
 
 项目源码目录设计
 	src
@@ -53,7 +53,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 在index.html中引入移动端开发的几个文件
 1.<!-- 移动端视口设置 -->
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maxinum-scale=1.0,mininum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
 2.<!-- 移动端浏览器样式重置 -->
 <link rel="stylesheet" href="./static/css/reset.css">	
 3.<!-- 阿里矢量图标库 -->
@@ -88,3 +88,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		}
 	},
 
+### 封装ajax请求
+	下载axios  npm install --save axios
+
+### 1.异步数据
+	
+### 2.登录/注册
