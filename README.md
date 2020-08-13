@@ -91,6 +91,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ### 封装ajax请求
 	下载axios  npm install --save axios
 
-### 1.异步数据
+### 1.异步显示数据
 	
 ### 2.登录/注册
