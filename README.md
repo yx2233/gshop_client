@@ -92,5 +92,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 	下载axios  npm install --save axios
 
 ### 1.异步显示数据
+	所有从后台获取的数据都要用vuex管理  
+	下载vuex
+	配置vuex最核心的管理对象store(state,mutation,action,getter,mutation-types)
 	
 ### 2.登录/注册
