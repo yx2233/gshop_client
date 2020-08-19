@@ -12,7 +12,7 @@
 				<span class="header_login_text">登录|注册</span>
 			</span>
 		</header> -->
-		<HeaderTop title="昌平区北七家宏福科技园(337省道北)">
+		<HeaderTop :title="address.name">
 			<span class="header_search" slot="left">
 				<i class="iconfont icon-sousuo"></i>
 			</span>
@@ -142,6 +142,7 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	// swiper用的是6.0以上的版本
 	import Swiper from 'swiper/swiper-bundle.js'
 	import "swiper/swiper-bundle.css"
@@ -160,6 +161,9 @@
 					el: '.swiper-pagination',
 				}
 			})
+		},
+		computed:{
+			...mapState(['address'])
 		},
 		components: {
 			HeaderTop,
