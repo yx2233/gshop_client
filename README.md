@@ -93,7 +93,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ### 1.异步显示数据
 	所有从后台获取的数据都要用vuex管理  
-	下载vuex  npm install --save store
+	下载vuex  npm install -S vuex
 	配置vuex最核心的管理对象store(state,mutation,action,getter,mutation-types)
 	个人感觉：
 	state：更像是在初始化数据，确定数据是数组，对象还是字符串型的

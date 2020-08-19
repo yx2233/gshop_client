@@ -26,10 +26,10 @@ export default {
 			const address = result.data
 			commit(RECEIVE_ADDRESS,{address})
 		}
-	}
+	},
 	
 	// 异步获取食品分类列表
-	async getCategorys ({commit}){
+	async getCategorys({commit}) {
 		// 发送ajax请求
 		const result = await reqFoodCategorys()
 		// 提交一个mutation
@@ -37,7 +37,8 @@ export default {
 			const categorys = result.data
 			commit(RECEIVE_CATEGORYS,{categorys})
 		}
-	}
+	},
+	
 	
 	// 异步获取商家列表
 	async getShops ({commit,state}){
@@ -49,5 +50,5 @@ export default {
 			const shops = result.data
 			commit(RECEIVE_SHOPS,{shops})
 		}
-	}
+	},
 }
