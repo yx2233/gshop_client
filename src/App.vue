@@ -13,7 +13,7 @@
 			// this.$store.dispatch('getAddress')
 			this.getAddress()
 		},
-		methods:{
+		methods:{ 
 			...mapActions(['getAddress'])
 		},
 		components:{

@@ -99,6 +99,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 	state：更像是在初始化数据，确定数据是数组，对象还是字符串型的
 	mutation-types:接收数据，赋值
 	
+	商品列表:
+		请求回来的数据是一维数组，要做到分页循环显示，就要构造出二维数组
+		一维数组的元素个数最大为8，pageSize=8
+		
 	
 	
 	
