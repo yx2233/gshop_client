@@ -103,7 +103,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		请求回来的数据是一维数组，要做到分页循环显示，就要构造出二维数组
 		一维数组的元素个数最大为8，pageSize=8
 		
+	Vue.nextTick(function () {})  DOM更新之后立即调用
 	
-	
+	轮播的实现：
+		1.根据一维数组生成二维数组
+		2.延迟到更新界面之后执行
 	
 ### 2.登录/注册

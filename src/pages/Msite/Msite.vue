@@ -65,9 +65,10 @@
 				baseImageUrl:'https://fuss10.elemecdn.com'
 			}
 		},
-		mounted() {
+		mounted() {  // 页面已经渲染完成
 			// 发送请求
 			this.$store.dispatch('getCategorys')
+			this.$store.dispatch('getShops')
 			
 			
 		},
@@ -101,17 +102,20 @@
 				return arr
 		   }
 		},
-		watch () {
+		watch :{
 			// categorys 开始是个空数组，有数据之后才显示的列表。监视categorys，
 			categorys (value) {
-				// new一个swiper实例对象，实现轮播
-				new Swiper('.swiper-container', {
-					//循环轮播
-					loop: true,
-					// 如果需要分页器
-					pagination: {
-						el: '.swiper-pagination',
-					}
+				// Vue.nextTick(function () {})  DOM更新之后立即调用
+				this.$nextTick(()=>{   //要写在数据更新之后
+					// new一个swiper实例对象，实现轮播
+					new Swiper('.swiper-container', {
+						//循环轮播
+						loop: true,
+						// 如果需要分页器
+						pagination: {
+							el: '.swiper-pagination',
+						}
+					})
 				})
 			}
 		},
