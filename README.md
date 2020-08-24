@@ -109,4 +109,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		1.根据一维数组生成二维数组
 		2.延迟到更新界面之后执行
 	
+	页面骨架的实现： 增强用户体验感
+		1.使用v-if判断返回的数据长度，存在的话显示正常的页面数据
+		2.<img src="./images/shop_back.svg" alt="" v-else> 否则的话，显示页面的骨架图片
+		3.可参考shopList.vue的写法
+	
 ### 2.登录/注册

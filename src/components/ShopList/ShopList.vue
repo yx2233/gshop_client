@@ -1,34 +1,30 @@
 <template>
 	<div class="shop_container">
-		<ul class="shop_list">
+		<ul class="shop_list" v-if="shops.length">
 			<li class="shop_li border-1px" v-for="(shop, index) in shops" :key="index">
 				<a>
 					<div class="shop_left">
-						<img class="shop_img" :src="baseImgUrl+shop.image_path">
+						<!-- <img class="shop_img" :src="baseImgUrl+shop.image_path"> -->
+						<img class="shop_img" src="./images/shop/1.jpg">
 					</div>
 					<div class="shop_right">
 						<section class="shop_detail_header">
-							<h4 class="shop_title ellipsis">锄禾日当午，汗滴禾下土</h4>
-							<ul class="shop_detail_ul">
-								<li class="supports">保</li>
-								<li class="supports">准</li>
-								<li class="supports">票</li>
+							<h4 class="shop_title ellipsis">{{shop.name}}</h4>
+							<ul class="shop_detail_ul" v-for="(support,index) in shop.supports" :key="index">
+								<li class="supports">{{support.icon_name}}</li>
 							</ul>
 						</section>
 						<section class="shop_rating_order">
 							<section class="shop_rating_order_left">
-								<div class="star star-24">
-									<span class="star-item on"></span>
-									<span class="star-item on"></span>
-									<span class="star-item on"></span>
-									<span class="star-item half"></span>
-									<span class="star-item off"></span>
-								</div>
+								
+								<Star :score="shop.rating" :size="24" />
+								
+								
 								<div class="rating_section">
-									3.6
+									{{shop.rating}}
 								</div>
 								<div class="order_section">
-									月售106单
+									月售{{shop.recent_order_num}}单
 								</div>
 							</section>
 							<section class="shop_rating_order_right">
@@ -37,20 +33,25 @@
 						</section>
 						<section class="shop_distance">
 							<p class="shop_delivery_msg">
-								<span>¥20起送</span>
+								<span>¥{{shop.float_minimum_order_amount}}起送</span>
 								<span class="segmentation">/</span>
-								<span>配送费约¥5</span>
+								<span>配送费约¥{{shop.float_delivery_fee}}</span>
 							</p>
 						</section>
 					</div>
 				</a>
 			</li>
 		</ul>
+		<ul v-else>
+			<li v-for="item in 6"><img src="./images/shop_back.svg" alt=""></li>
+		</ul>
+		
 	</div>
 </template>
 
 <script>
 	import {mapState} from 'vuex'
+	import Star from '../Star/Star.vue'
 	export default{
 		data () {
 			return {
@@ -61,6 +62,9 @@
 			// 在Msite中发送异步请求
 			// 读数据
 			...mapState(['shops'])
+		},
+		components:{
+			Star
 		}
 	}
 </script>
@@ -179,161 +183,26 @@
 		clear: both;
 	}
 	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left {
+	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left{
 		float: left;
 		color: #ff9a0d;
 	}
 	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star {
+	.star {
 		float: left;
 		font-size: 0;
 	}
 	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star .star-item {
-		display: inline-block;
-		background-repeat: no-repeat;
-	}
 	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item {
-		width: 20px;
-		height: 20px;
-		margin-right: 22px;
-		background-size: 20px 20px;
-	}
 	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item:last-child {
-		margin-right: 0;
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item.on {
-		background-image: url("./images/stars/star48_on@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item.on {
-			background-image: url("./images/stars/star48_on@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item.half {
-		background-image: url("./images/stars/star48_half@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item.half {
-			background-image: url("./images/stars/star48_half@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item.off {
-		background-image: url("./images/stars/star48_off@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-48 .star-item.off {
-			background-image: url("./images/stars/star48_off@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item {
-		width: 15px;
-		height: 15px;
-		margin-right: 6px;
-		background-size: 15px 15px;
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item:last-child {
-		margin-right: 0;
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item.on {
-		background-image: url("./images/stars/star36_on@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item.on {
-			background-image: url("./images/stars/star36_on@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item.half {
-		background-image: url("./images/stars/star36_half@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item.half {
-			background-image: url("./images/stars/star36_half@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item.off {
-		background-image: url("./images/stars/star36_off@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-36 .star-item.off {
-			background-image: url("./images/stars/star36_off@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item {
-		width: 10px;
-		height: 10px;
-		margin-right: 3px;
-		background-size: 10px 10px;
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item:last-child {
-		margin-right: 0;
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item.on {
-		background-image: url("./images/stars/star24_on@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item.on {
-			background-image: url("./images/stars/star24_on@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item.half {
-		background-image: url("./images/stars/star24_half@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item.half {
-			background-image: url("./images/stars/star24_half@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item.off {
-		background-image: url("./images/stars/star24_off@2x.png");
-	}
-	
-	@media (-webkit-min-device-pixel-ratio: 3),
-	(min-device-pixel-ratio: 3) {
-		.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .star.star-24 .star-item.off {
-			background-image: url("./images/stars/star24_off@3x.png");
-		}
-	}
-	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .rating_section {
+	.rating_section {
 		float: left;
 		font-size: 10px;
 		color: #ff6000;
 		margin-left: 4px;
 	}
 	
-	.shop_container .shop_list .shop_li>a .shop_right .shop_rating_order .shop_rating_order_left .order_section {
+	.order_section {
 		float: left;
 		font-size: 10px;
 		color: #666;
