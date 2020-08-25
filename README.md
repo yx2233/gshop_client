@@ -45,11 +45,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		store vuex相关模块文件夹
 		App.vue 根组件
 		main.js 入口文件
-
+<!-- 
 安装stylus依赖包
 	npm install stylus stylus-loader --save-dev
 	解释：	stylus 将stylus转为css
-			stylus-loader 让webpack理解stylus
+			stylus-loader 让webpack理解stylus -->
 
 在index.html中引入移动端开发的几个文件
 1.<!-- 移动端视口设置 -->
@@ -115,3 +115,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		3.可参考shopList.vue的写法
 	
 ### 2.登录/注册
+	1）登录界面相关效果
+		切换登录方式
+		手机号合法检查
+		倒计时效果(验证码发送倒计时)
+		切换显示或隐藏密码
+		前台验证提示
+	2）前后台交互功能
+		

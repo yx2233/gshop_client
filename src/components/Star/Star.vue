@@ -1,18 +1,49 @@
 <template>
-	<div class="star star-24">
-		<span class="star-item on"></span>
-		<span class="star-item on"></span>
+	<div class="star" :class="'star-'+size">
+		<span class="star-item" v-for="(sc,index) in starClasses" :class="sc" :key='index'></span>
+										<!-- sc:starClasses的缩写 -->
+		<!-- <span class="star-item on"></span>
 		<span class="star-item on"></span>
 		<span class="star-item half"></span>
-		<span class="star-item off"></span>
+		<span class="star-item off"></span> -->
 	</div>
 </template>
 
 <script>
+	const CLASS_ON = 'on'
+	const CLASS_HALF = 'half'
+	const CLASS_OFF = 'off'
 	export default{
 		props:{
 			score:Number,  //星星分数
 			size: Number   //星星尺寸
+		},
+		computed:{
+			// 星星的样式显示是根据score(分数)属性计算的
+			starClasses () {
+				const {score} = this;
+				const sc = [];
+				/*
+					3.2  3个满星 + 0个半星 + 2个灰星
+					3.5  3个满星 + 1个半星 + 1个灰星
+					星星的个数总共是5个，小数部分 <0.5 灰星； >=0.5 半星;   
+				*/
+				// 先往sc中添加 n个'on'满星  CLASS_ON 
+				var scoreInteger = Math.floor(score);  //取整
+				for(let i = 0; i < scoreInteger; i++ ){
+					sc.push(CLASS_ON)
+				}
+				// 再往sc中添加 0/1个'half'半星 CLASS_HALF
+				if(score*10 - scoreInteger*10 >= 5){
+					sc.push(CLASS_HALF)
+				}
+				// 最后再加 n个'off'灰星 CLASS_OFF
+				while(sc.length < 5){     
+					//只要星星类名数组的长度<5,就一直添加，先添加的是on和half，剩下的就是off
+					sc.push(CLASS_OFF)
+				}
+				return sc
+			}
 		}
 	}
 </script>
