@@ -117,7 +117,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ### 2.登录/注册
 	1）登录界面相关效果
 		切换登录方式
-		手机号合法检查
+				两种登录方式的切换，字体颜色和内容，点击时切换(布尔值，绑定class属性，@click)
+		手机号合法检查   
+				当输入框输入正确的手机号，验证码字体颜色由灰色变为黑色（正则表达式，绑定class属性，v-model双向绑定）
+				  
 		倒计时效果(验证码发送倒计时)
 		切换显示或隐藏密码
 		前台验证提示

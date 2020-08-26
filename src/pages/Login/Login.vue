@@ -4,16 +4,24 @@
 			<div class="login_header">
 				<h2 class="login_logo">硅谷外卖</h2>
 				<div class="login_header_title">
-					<a href="javascript:;" class="on">短信登录</a>
-					<a href="javascript:;">密码登录</a>
+					<a href="javascript:;" :class="{on: loginWay}" @click="loginWay = true">短信登录</a>
+					<a href="javascript:;" :class="{on: !loginWay}" @click="loginWay = false">密码登录</a>
+					<!-- <a href="javascript:;" class="on">短信登录</a>
+					<a href="javascript:;">密码登录</a> -->
 				</div>
 			</div>
 			<div class="login_content">
 				<form>
-					<div class="on">
+					<div :class="{on: loginWay}">
 						<section class="login_message">
-							<input type="tel" maxlength="11" placeholder="手机号">
-							<button disabled="disabled" class="get_verification">获取验证码</button>
+							<input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+							<button class="get_verification" 
+								:disabled="!rightPhone" 
+								:class="{right_phone:rightPhone}"
+								@click.prevent="getCode">
+								{{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+							</button>
+							<!-- :disabled="!rightPhone" 当手机号格式输入正确，可以点击 获取验证码 -->
 						</section>
 						<section class="login_verification">
 							<input type="tel" maxlength="8" placeholder="验证码">
@@ -23,7 +31,7 @@
 							<a href="javascript:;">《用户服务协议》</a>
 						</section>
 					</div>
-					<div>
+					<div :class="{on: !loginWay}">
 						<section>
 							<section class="login_message">
 								<input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
@@ -53,10 +61,67 @@
 </template>
 
 <script>
-
+	export default {
+		data() {
+			return {
+				/*
+					短信登录，密码登录两种登录方式切换
+					两种样式切换，一般用布尔值
+					可默认设置true为短信登录，false为密码登录
+				*/
+				loginWay: true,
+				phone:'',
+				computeTime:0,  //计时时间
+			}
+		},
+		computed: {
+			/*
+				功能:输入正确格式的手机号，验证码字体颜色变为黑色
+				实现:v-model绑定输入框，验证码绑定class属性(class是否显示以及显示的颜色),
+					正则验证表达式，当手机号验证通过，class属性为true
+			*/
+		   rightPhone(){
+			   return /^1\d{10}$/.test(this.phone);
+		   }
+			
+		},
+		methods:{
+			getCode(){
+				/* 
+				短信登录：
+					思路:
+						手机号输入正确，“发送验证码” 变为 “倒计时()秒”，计时结束又变为“发送验证码”
+						验证码发送倒计时过程中，不能被点击
+					实现:
+						启动倒计时
+						发送ajax请求(向指定手机号发送验证码)
+				*/
+			   
+				// 测试当手机号输入正确，获取验证码字样是否可点击
+				// alert('---');
+					
+				// 如果当前没有计时
+				if(!this.computeTime){
+					this.computeTime = 30;
+					const intervalId = setInterval( ()=>{
+						// 启动倒计时
+						this.computeTime --
+						if(this.computeTime <= 0){
+							// 停止计时
+							clearInterval(intervalId)
+						}
+					},1000)
+					
+					// 发送ajax请求(向指定手机号发送验证码)
+				}
+				
+			}
+		}
+	}
 </script>
 
 <style>
+	/* 短信登录和密码登录的字体颜色样式和显示内容都是通过 .on 来实现的 */
 	.loginContainer {
 		width: 100%;
 		height: 100%;
@@ -138,6 +203,10 @@
 		font-size: 14px;
 		background: transparent;
 	}
+	.loginContainer .loginInner .login_content>form>div .login_message .right_phone{
+		color:#000;
+	}
+	
 
 	.loginContainer .loginInner .login_content>form>div .login_verification {
 		position: relative;
