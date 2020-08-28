@@ -11,20 +11,17 @@
 				</div>
 			</div>
 			<div class="login_content">
-				<form>
+				<form @submit.prevent="login">
 					<div :class="{on: loginWay}">
 						<section class="login_message">
 							<input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-							<button class="get_verification" 
-								:disabled="!rightPhone" 
-								:class="{right_phone:rightPhone}"
-								@click.prevent="getCode">
+							<button class="get_verification" :disabled="!rightPhone" :class="{right_phone:rightPhone}" @click.prevent="getCode">
 								{{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
 							</button>
 							<!-- :disabled="!rightPhone" 当手机号格式输入正确，可以点击 获取验证码 -->
 						</section>
 						<section class="login_verification">
-							<input type="tel" maxlength="8" placeholder="验证码">
+							<input type="tel" maxlength="8" placeholder="验证码" v-model="code">
 						</section>
 						<section class="login_hint">
 							温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -34,18 +31,24 @@
 					<div :class="{on: !loginWay}">
 						<section>
 							<section class="login_message">
-								<input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+								<input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
 							</section>
 							<section class="login_verification">
-								<input type="tel" maxlength="8" placeholder="密码">
-								<div class="switch_button off">
-									<div class="switch_circle"></div>
-									<span class="switch_text">...</span>
+								<input type="text" maxlength="8" placeholder="密码" v-if="showPwd" v-model="pwd"> <!-- false不显示 -->
+								<input type="password" maxlength="8" placeholder="密码" v-else v-model="pwd"> <!-- true显示 -->
+								<div class="switch_button" :class="showPwd ? 'on' : 'off' " @click="showPwd = !showPwd">
+									<!-- :class="showPwd ? 'on' : 'off' "  解释：当密码显示时，class名为on ,否则为off -->
+									<div class="switch_circle" :class="{right:showPwd}"></div>
+									<span class="switch_text">
+										{{showPwd ? 'abc' :'...'}}
+										<!-- {{showPwd ? 'abc' :'...'}} 解释：当密码显示时显示abc，否则显示...或者空 -->
+									</span>
 								</div>
 							</section>
 							<section class="login_message">
-								<input type="text" maxlength="11" placeholder="验证码">
-								<img class="get_verification" src="./images/captcha.svg" alt="captcha">
+								<input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+								<img class="get_verification" src="http://localhost:4000/captcha" alt="captcha"
+								@click="getCaptcha">
 							</section>
 						</section>
 					</div>
@@ -57,10 +60,12 @@
 				<i class="iconfont icon-jiantou2"></i>
 			</a>
 		</div>
+		<AlertTip :alertText='alertText' v-show="showAlert" @closeTip="closeTip" />
 	</section>
 </template>
 
 <script>
+	import AlertTip from '../../components/AlertTip/AlertTip.vue'
 	export default {
 		data() {
 			return {
@@ -69,9 +74,16 @@
 					两种样式切换，一般用布尔值
 					可默认设置true为短信登录，false为密码登录
 				*/
-				loginWay: true,
-				phone:'',
-				computeTime:0,  //计时时间
+				loginWay: false,
+				computeTime: 0, //计时时间
+				showPwd: false, //默认不显示密码
+				phone: '', //手机号
+				code: '', //验证码
+				name: '', //用户名
+				pwd: '', //密码
+				captcha: '', //图形验证码
+				alertText:'',  //提示框内容
+				showAlert:false, //是否显示提示框
 			}
 		},
 		computed: {
@@ -80,13 +92,14 @@
 				实现:v-model绑定输入框，验证码绑定class属性(class是否显示以及显示的颜色),
 					正则验证表达式，当手机号验证通过，class属性为true
 			*/
-		   rightPhone(){
-			   return /^1\d{10}$/.test(this.phone);
-		   }
-			
+			rightPhone() {
+				return /^1\d{10}$/.test(this.phone);
+			}
+
 		},
-		methods:{
-			getCode(){
+		methods: {
+			// 发送验证码
+			getCode() {
 				/* 
 				短信登录：
 					思路:
@@ -96,26 +109,78 @@
 						启动倒计时
 						发送ajax请求(向指定手机号发送验证码)
 				*/
-			   
+
 				// 测试当手机号输入正确，获取验证码字样是否可点击
 				// alert('---');
-					
+
 				// 如果当前没有计时
-				if(!this.computeTime){
+				if (!this.computeTime) {
 					this.computeTime = 30;
-					const intervalId = setInterval( ()=>{
+					const intervalId = setInterval(() => {
 						// 启动倒计时
-						this.computeTime --
-						if(this.computeTime <= 0){
+						this.computeTime--
+						if (this.computeTime <= 0) {
 							// 停止计时
 							clearInterval(intervalId)
 						}
-					},1000)
-					
+					}, 1000)
+
 					// 发送ajax请求(向指定手机号发送验证码)
 				}
-				
-			}
+
+			},
+			
+			// 封装的提示框的显示函数
+			alertTipShow (tip){
+				this.showAlert = true;
+				this.alertText = tip
+			},
+			
+			// 登录
+			login() {
+				/*
+					判断是哪种登录方式
+				*/
+				if (this.loginWay) { //短信登录
+					const {phone, rightPhone, code} = this;
+					if(!this.rightPhone){
+						// 手机号不正确
+						this.alertTipShow('手机号不正确')
+					}else if( !/^\d{6}$/.test(code) ){
+						// 请输入正确的验证码
+						this.alertTipShow('请输入正确的验证码')
+					}
+				} else { //密码登录
+					const {name, pwd, captcha} = this;
+					if(!this.name){
+						// 用户名不正确
+						this.alertTipShow('用户名不正确')
+					}else if(!this.pwd){
+						// 请输入正确的验证码
+						this.alertTipShow('请输入正确的验证码')
+					}else if(!this.captcha){
+						// 请输入正确的图形验证码
+						this.alertTipShow('请输入正确的图形验证码')
+					}
+				}
+			},
+			
+			// 关闭提示框
+			closeTip (){
+				this.showAlert = false;
+				this.alertText = ''
+			},
+			
+			// 一次性图形验证码
+			getCaptcha(event){
+				// console.log(event);
+				event.target.src='http://localhost:4000/captcha?time=' + Date.now();
+			},
+			
+			
+		},
+		components:{
+			AlertTip
 		}
 	}
 </script>
@@ -203,10 +268,11 @@
 		font-size: 14px;
 		background: transparent;
 	}
-	.loginContainer .loginInner .login_content>form>div .login_message .right_phone{
-		color:#000;
+
+	.loginContainer .loginInner .login_content>form>div .login_message .right_phone {
+		color: #000;
 	}
-	
+
 
 	.loginContainer .loginInner .login_content>form>div .login_verification {
 		position: relative;
@@ -256,6 +322,10 @@
 		background: #fff;
 		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 		transition: transform 0.3s;
+	}
+
+	.loginContainer .loginInner .login_content>form>div .login_verification .switch_button>.right {
+		transform: translateX(30px);
 	}
 
 	.loginContainer .loginInner .login_content>form>div .login_hint {

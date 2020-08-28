@@ -1,7 +1,7 @@
 /*
 通过mutation间接更新state多个方法的对象
 操作mutation
-*/
+*/ 
 // 引入mutation-types中的三个方法名
 import {
 	RECEIVE_ADDRESS,

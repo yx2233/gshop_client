@@ -88,7 +88,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		}
 	},
 
-### 封装ajax请求
+### 封装ajax请求  ai ke siou si(axios)
 	下载axios  npm install --save axios
 
 ### 1.异步显示数据
@@ -123,6 +123,16 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 				  
 		倒计时效果(验证码发送倒计时)
 		切换显示或隐藏密码
+				显示密码用type='text'，隐藏密码用type='password'
+				v-if='showPwd'，v-else 实现两者的切换   showPwd:false 默认不显示密码
+				v-model='pwd' 同时绑定 type='text',type='password'
+				在按钮上绑定 @click='showPwd = !showPwd' 实现隐藏或显示的切换
 		前台验证提示
 	2）前后台交互功能
+		动态一次性图形验证码
+		动态一次性短信验证码     容联·云通讯
+		短信登录
+		密码登录
+		获取用户信息，实现自动登录
+		退出登录
 		

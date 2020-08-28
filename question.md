@@ -11,6 +11,8 @@
 	可以写成import Router from './router'，router: Router。
 	这个时候key和value不一致，不能省略，就比较麻烦了。为了书写简单，上面import的时候就import router
 #4.点餐评价时的小星星怎么实现
+#5.computed 和 methods的区别
+
 
 ### 轮播的实现
 	1.确定请求回来的数据是一维还是二维数组，轮播循环显示的是一个个数组，外边再包裹一个大数组
