@@ -12,6 +12,7 @@
 	这个时候key和value不一致，不能省略，就比较麻烦了。为了书写简单，上面import的时候就import router
 #4.点餐评价时的小星星怎么实现
 #5.computed 和 methods的区别
+#6.computed是怎么做缓存处理的
 
 
 ### 轮播的实现

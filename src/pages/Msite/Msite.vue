@@ -13,12 +13,17 @@
 			</span>
 		</header> -->
 		<HeaderTop :title="address.name">
-			<span class="header_search" slot="left">
+			<router-link class="header_search" slot="left" to="/search">
 				<i class="iconfont icon-sousuo"></i>
-			</span>
-			<span class="header_login" slot="right">
-				<span class="header_login_text">登录|注册</span>
-			</span>
+			</router-link>
+			<router-link class="header_login" slot="right" :to="userInfo._id ? '/userinfo' :'/login'">
+				<span class="header_login_text" v-if="!userInfo._id">
+					登录|注册
+				</span>
+				<span class="header_login_text" v-else>
+					<i class="iconfont icon-person"></i>
+				</span>
+			</router-link>
 		</HeaderTop>
 
 		<!--首页导航-->
@@ -52,6 +57,7 @@
 </template>
 
 <script>
+	// 当一个组件要获取多个状态的时候，可以使用mapState去统一获取
 	import {mapState} from 'vuex'
 	// swiper用的是6.0以上的版本
 	import Swiper from 'swiper/swiper-bundle.js'
@@ -75,7 +81,7 @@
 		},
 		computed:{
 			// 读数据
-			...mapState(['address','categorys']),
+			...mapState(['address','categorys','userInfo']),
 			
 			/*
 				根据categorys一维数组生成一个二维数组

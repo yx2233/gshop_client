@@ -48,7 +48,7 @@
 							<section class="login_message">
 								<input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
 								<img class="get_verification" src="http://localhost:4000/captcha" alt="captcha"
-								@click="getCaptcha">
+								@click="getCaptcha" ref="captcha">
 							</section>
 						</section>
 					</div>
@@ -66,6 +66,7 @@
 
 <script>
 	import AlertTip from '../../components/AlertTip/AlertTip.vue'
+	import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
 	export default {
 		data() {
 			return {
@@ -98,8 +99,8 @@
 
 		},
 		methods: {
-			// 发送验证码
-			getCode() {
+			// 发送短信验证码
+			async getCode() {
 				/* 
 				短信登录：
 					思路:
@@ -116,18 +117,29 @@
 				// 如果当前没有计时
 				if (!this.computeTime) {
 					this.computeTime = 30;
-					const intervalId = setInterval(() => {
+					this.intervalId = setInterval(() => {
 						// 启动倒计时
 						this.computeTime--
 						if (this.computeTime <= 0) {
 							// 停止计时
-							clearInterval(intervalId)
+							clearInterval(this.intervalId)
 						}
 					}, 1000)
 
 					// 发送ajax请求(向指定手机号发送验证码)
+					const result = await reqSendCode(this.phone);
+					// 失败
+					if(result.code === 1){
+						// 显示提示
+						this.alertTipShow(result.msg)
+						// 停止倒计时
+						if(this.computeTime){
+							this.computeTime = 0;
+							clearInterval(this.intervalId)
+							this.intervalId = undefined
+						}
+					}
 				}
-
 			},
 			
 			// 封装的提示框的显示函数
@@ -137,7 +149,9 @@
 			},
 			
 			// 登录
-			login() {
+			async login() {
+				let result
+				
 				/*
 					判断是哪种登录方式
 				*/
@@ -145,24 +159,53 @@
 					const {phone, rightPhone, code} = this;
 					if(!this.rightPhone){
 						// 手机号不正确
-						this.alertTipShow('手机号不正确')
+						this.alertTipShow('手机号不正确');
+						return 
 					}else if( !/^\d{6}$/.test(code) ){
 						// 请输入正确的验证码
 						this.alertTipShow('请输入正确的验证码')
+						return
 					}
+					// 发送短信登录的ajax请求
+					result = await reqSmsLogin(phone,code);
 				} else { //密码登录
 					const {name, pwd, captcha} = this;
 					if(!this.name){
 						// 用户名不正确
 						this.alertTipShow('用户名不正确')
+						return
 					}else if(!this.pwd){
 						// 请输入正确的验证码
 						this.alertTipShow('请输入正确的验证码')
+						return
 					}else if(!this.captcha){
 						// 请输入正确的图形验证码
 						this.alertTipShow('请输入正确的图形验证码')
+						return
 					}
+					// 发送密码登录的ajax请求
+					result = await reqPwdLogin({name, pwd, captcha})
 				}
+				
+				// 停止倒计时
+				if(this.computeTime){	
+					this.computeTime = 0;
+					clearInterval(this.intervalId)
+					this.intervalId = undefined
+				}	
+				
+				if(result.code ==0){  //登陆成功
+					const user = result.data
+					// 保存用户信息到state中
+					this.$store.dispatch('recordUser', user)
+					// 跳转到“我的”页面
+					this.$router.replace('/profile')
+				}else{  //登陆失败
+					const msg = result.msg;
+					this.alertTipShow(msg);  //提示登录错误
+					this.getCaptcha();	// 图形验证码刷新
+				}
+				
 			},
 			
 			// 关闭提示框
@@ -172,9 +215,9 @@
 			},
 			
 			// 一次性图形验证码
-			getCaptcha(event){
+			getCaptcha(){
 				// console.log(event);
-				event.target.src='http://localhost:4000/captcha?time=' + Date.now();
+				this.$refs.captcha.src='http://localhost:4000/captcha?time=' + Date.now();
 			},
 			
 			
