@@ -7,6 +7,8 @@ import {Button} from 'mint-ui'
 import router from './router'
 import store from './store'
 
+import './mock/mockServer'
+
 Vue.config.devtools = true;
 // 注册全局组件
 Vue.component(Button.name, Button)

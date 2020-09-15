@@ -136,3 +136,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 		获取用户信息，实现自动登录
 		退出登录
 		
+dispatch() 异步获取数据到xuex的state中
+mapState() 从xuex的state中读数据
+显示数据

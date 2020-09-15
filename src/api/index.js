@@ -34,3 +34,23 @@ export const reqUserInfo = ()=>ajax(BASE_URL+'/userinfo')
 
 // [10、用户登出](#10用户登出)<br/>
 export const reqLogout = ()=>ajax(BASE_URL+'/logout')
+
+// 获取点餐数据
+export const reqShopGoods = () =>ajax('/goods')  
+
+// 获取评价
+export const reqShopRatings = () =>ajax('/ratings')
+
+// 获取商家信息
+export const reqShopInfo = () =>ajax('/info')
+
+
+
+
+
+
+
+
+//mockjs模拟的数据不需要BASE_UEL
+// 加BASE_URL(api)是为了匹配代码
+// mockjs拦截ajax请求，就是代理
