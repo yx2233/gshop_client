@@ -1,12 +1,16 @@
 <template>
 	<div class="cartcontrol">
-		<div class="iconfont icon-remove_circle_outline"></div>
-		<div class="cart-count">1</div>
+		<!-- 当数量＜1时，'-'和数量不显示 -->
+		<div class="iconfont icon-remove_circle_outline" v-if="food.count"></div>
+		<div class="cart-count" v-if="food.count">{{food.count}}</div>
 		<div class="iconfont icon-add_circle"></div>
 	</div>
 </template>
-
 <script>
+	/*
+		点击'+'号，'-'号和数量出现，count是1，再次点击'+'号，只有count自增
+		点击'-'号，count自减，count为1时，再点'-'号，count和'-'号隐藏
+	*/
 	export default{
 		props:{
 			food:Object
