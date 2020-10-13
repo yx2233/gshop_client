@@ -4,6 +4,7 @@
 */
 // 引入所有的mutation-type
 	// RECEIVE_ADDRESS,RECEIVE_CATEGORYS,RECEIVE_SHOPS是三个方法名
+import Vue from 'vue'
 import {
 	RECEIVE_ADDRESS,
 	RECEIVE_CATEGORYS,
@@ -43,10 +44,20 @@ export default{
 		state.info = info
 	},
 	[INCREMENT_FOOD_COUNT](state, {food}){
-		
+		if(!food.count){  
+			// food.count = 1;
+			/*
+				对象，属性名，属性值
+			*/
+			Vue.set(food,'count',1);
+		}else{
+			food.count++;
+		}
 	},
 	[DECREMENT_FOOD_COUNT](state, {food}){
-		
+		if(food.count){
+			food.count--;
+		}
 	},
 	
 	
