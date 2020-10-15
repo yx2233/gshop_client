@@ -2,10 +2,10 @@
 	<div class="cartcontrol">
 		<!-- 当数量＜1时，'-'和数量不显示 -->
 		<transition name="move">
-			<div class="iconfont icon-remove_circle_outline" v-if="food.count" @click="updateFoodCount(false)"></div>
+			<div class="iconfont icon-remove_circle_outline" v-if="food.count" @click.stop="updateFoodCount(false)"></div>
 		</transition>
 		<div class="cart-count" v-if="food.count">{{food.count}}</div>
-		<div class="iconfont icon-add_circle" @click="updateFoodCount(true)"></div>
+		<div class="iconfont icon-add_circle" @click.stop="updateFoodCount(true)"></div>
 	</div>
 </template>
 <script>

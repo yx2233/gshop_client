@@ -2,23 +2,25 @@
 	<div class="food" v-if="isShow">
 		<div class="food-content">
 			<div class="image-header">
-				<img src="http://fuss10.elemecdn.com/8/a6/453f65f16b1391942af11511b7a90jpeg.jpeg?imageVi ew2/1/w/750/h/750">
-				<p class="foodpanel-desc">主、辅料:水、大米、南瓜、冰糖等</p>
+				<img :src="food.image">
+				<p class="foodpanel-desc">{{food.info}}</p>
 				<div class="back" @click="toggleShow">
 					<i class="iconfont icon-arrow_left"></i>
 				</div>
 			</div>
 			<div class="content">
-				<h1 class="title">南瓜粥</h1>
+				<h1 class="title">{{food.name}}</h1>
 				<div class="detail">
-					<span class="sell-count">月售 91 份</span>
-					<span class="rating">好评率 100%</span>
+					<span class="sell-count">月售 {{food.sellCount}} 份</span>
+					<span class="rating">好评率 {{food.rating}}%</span>
 				</div>
 				<div class="price">
-					<span class="now">￥9</span>
-					<span class="old" style="display: none;">￥</span>
+					<span class="now">￥{{food.price}}</span>
+					<span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
 				</div>
-				<div class="cartcontrol-wrapper"> cartcontrol 组件 </div>
+				<div class="cartcontrol-wrapper">
+					<CartControl :food="food" />
+				</div>
 			</div>
 		</div>
 		<div class="food-cover" @click="toggleShow"></div>
@@ -26,20 +28,24 @@
 </template>
 
 <script>
+	import CartControl from '../CartControl/CartControl.vue'
 	export default {
-		props:{
-			food:Object
+		props: {
+			food: Object
 		},
-		data(){
-			return{
-				isShow:false
+		data() {
+			return {
+				isShow: false
 			}
 		},
-		methods:{
-			toggleShow(){
+		methods: {
+			toggleShow() {
 				this.isShow = !this.isShow;
 			}
-		}
+		},
+		components:{
+			CartControl
+		},
 	}
 </script>
 
@@ -161,7 +167,7 @@
 		color: rgb(147, 153, 159);
 	}
 
-	.food .food-content .content .price .cartcontrol-wrapper {
+	.food .food-content .content .cartcontrol-wrapper {
 		position: absolute;
 		right: 12px;
 		bottom: 12px;
@@ -171,31 +177,33 @@
 		position: absolute;
 		right: 18px;
 		bottom: 18px;
-		z-index: 10; 
-		height: 24px ;
-		line-height: 24px ;
-		padding: 0 12px ;
-		box-sizing: border-box ;
-		border-radius: 12px; 
-		font-size: 10px ;
-		color: #fff ;
-		background: rgb(0, 160, 220); 
+		z-index: 10;
+		height: 24px;
+		line-height: 24px;
+		padding: 0 12px;
+		box-sizing: border-box;
+		border-radius: 12px;
+		font-size: 10px;
+		color: #fff;
+		background: rgb(0, 160, 220);
 	}
-	.food .food-content .content .price .buy.fade-transition
-	.food .food-content .content .price .buy.fade-enter{
-		transition: all 0.2s ;
+
+	.food .food-content .content .price .buy.fade-transition .food .food-content .content .price .buy.fade-enter {
+		transition: all 0.2s;
 		opacity: 1;
 	}
-	.food .food-content .content .price .buy.fade-leave{
+
+	.food .food-content .content .price .buy.fade-leave {
 		opacity: 0;
 	}
-	.food .food-cover{
-		position:absolute;
-		top:0 ;
-		right:0 ;
-		bottom:-48px ;
-		left:0 ;
-		z-index:55 ;
-		background-color:rgba(0, 0, 0, 0.5);
-	} 
+
+	.food .food-cover {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: -48px;
+		left: 0;
+		z-index: 55;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
 </style>

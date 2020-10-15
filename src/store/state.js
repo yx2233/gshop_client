@@ -33,5 +33,5 @@ export default {
 	goods:[],  //商家列表(点餐)
 	ratings:[], //评价
 	info:{},  //商家信息
-	
+	cartFoods:[],  //购物车中的食物列表
 }
