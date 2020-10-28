@@ -2,6 +2,7 @@
 	<div class="shop-header">
 		<!-- 左箭头 返回 -->
 		<nav class="shop-nav" :style="{backgroundImage:`url(${info.bgImg})`}">
+			<!-- <a class="back" @click="$router.push('/msite')"> -->
 			<a class="back" @click="$router.back()">
 				<i class="iconfont icon-arrow_left"></i>
 			</a>

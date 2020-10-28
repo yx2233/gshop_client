@@ -27,13 +27,13 @@
 			<div class="split"></div>
 			<div class="ratingselect">
 				<div class="rating-type border-1px">
-					<span class="block positive active" @click="setSelectType(2)"> 全部
+					<span class="block positive" :class="{active:selectType===2}" @click="setSelectType(2)"> 全部
 						<span class="count">{{ratings.length}}</span>
 					</span>
-					<span class="block positive" @click="setSelectType(0)"> 满意
+					<span class="block positive" :class="{active:selectType===0}" @click="setSelectType(0)"> 满意
 						<span class="count">{{positiveSize}}</span>
 					</span>
-					<span class="block negative" @click="setSelectType(1)"> 不满意
+					<span class="block negative" :class="{active:selectType===1}" @click="setSelectType(1)"> 不满意
 						<span class="count">{{ratings.length-positiveSize}}</span>
 					</span>
 				</div>
@@ -55,13 +55,13 @@
 								<span class="delivery">{{rating.deliveryTime}}</span>
 							</div>
 							<p class="text">{{rating.text}}</p>
-							<div class="recommend"> 
+							<div class="recommend">
 								<span class="iconfont" :class="rating.rateType === 0 ? 'icon-thumb_up':'icon-thumb_down' "></span>
 								<span class="item" v-for="(item,index) in rating.recommend" :key="index">
-								{{item}}
+									{{item}}
 								</span>
 							</div>
-							<div class="time">{{rating.rateTime}}</div>
+							<div class="time">{{rating.rateTime | date-format}}</div>
 						</div>
 					</li>
 				</ul>
@@ -72,37 +72,52 @@
 
 <script>
 	import BScroll from "better-scroll"
-	import {mapState,mapGetters} from 'vuex'
+	import {
+		mapState,
+		mapGetters
+	} from 'vuex'
 	import Star from "../../../components/Star/Star.vue"
 	export default {
-		data(){
+		data() {
 			return {
-				onlyShowText:true,	//勾选只看有内容的评价
-				selectType:2,	//满意0	不满意1	全部2
+				onlyShowText: true, //勾选只看有内容的评价
+				selectType: 2, //满意0	不满意1	全部2
 			}
 		},
-		methods:{
-			setSelectType(type){
-				this.selectType	= type;
+		methods: {
+			setSelectType(type) {
+				this.selectType = type;
 			},
-			toggleOnlyShowText(){
-				this.onlyShowText =! this.onlyShowText
+			toggleOnlyShowText() {
+				this.onlyShowText = !this.onlyShowText
 			},
 		},
 		mounted() {
-			this.$store.dispatch("getShopRatings",()=>{
-				this.$nextTick(()=>{
-					new BScroll(this.$refs.ratings,{
-						click:true
+			this.$store.dispatch("getShopRatings", () => {
+				this.$nextTick(() => {
+					new BScroll(this.$refs.ratings, {
+						click: true
 					})
 				})
 			})
 		},
-		computed:{
-			...mapState(['info',"ratings"]),
+		computed: {
+			...mapState(['info', "ratings"]),
 			...mapGetters(['positiveSize']),
-			filterRatings(){
-				
+
+			filterRatings() {
+				const {
+					ratings,
+					onlyShowText,
+					selectType
+				} = this;
+				return ratings.filter((rating) => {
+					const {
+						rateType,
+						text
+					} = rating;
+					return (selectType === 2 || selectType === rateType) && (!onlyShowText || text.length > 0)
+				})
 			},
 		},
 		components: {
@@ -224,6 +239,7 @@
 		padding: 18px 0;
 		margin: 0 18px;
 	}
+
 	/* .ratings .ratingselect .border-1px{
 		border: 1px solid rgba(7, 17, 27, 0.1);
 		font-size: 0;
@@ -292,7 +308,7 @@
 		margin-right: 12px;
 	}
 
-	.ratings .rating-wrapper .rating-item .avatar img{
+	.ratings .rating-wrapper .rating-item .avatar img {
 		border-radius: 50%;
 	}
 

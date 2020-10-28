@@ -1,9 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Msite from '../pages/Msite/Msite.vue'
-import Search from '../pages/Search/Search.vue'
-import Order from '../pages/Order/Order.vue'
-import Profile from '../pages/Profile/Profile.vue'
+
+const Msite = () => import('../pages/Msite/Msite.vue')
+const Search = () => import('../pages/Search/Search.vue')
+const Order = () => import('../pages/Order/Order.vue')
+const Profile = () => import('../pages/Profile/Profile.vue')
+
+// import Msite from '../pages/Msite/Msite.vue'
+// import Search from '../pages/Search/Search.vue'
+// import Order from '../pages/Order/Order.vue'
+// import Profile from '../pages/Profile/Profile.vue'
+
+
 import Login from '../pages/Login/Login.vue'
 import Shop from '../pages/Shop/Shop.vue'
 import ShopGoods from '../pages/Shop/ShopGoods/ShopGoods.vue'
@@ -54,6 +62,7 @@ export default new VueRouter({
 		{
 			path:'/shop',
 			component:Shop,
+			redirect:'/shop/goods',  //默认显示点餐页面
 			children:[
 				{
 					path:'/shop/goods',
@@ -66,11 +75,7 @@ export default new VueRouter({
 				{
 					path:'/shop/info',
 					component:ShopInfo
-				},
-				{
-					path:'',
-					redirect:'/shop/goods'  //默认显示点餐页面
-				},
+				}
 			]
 		},
 	]

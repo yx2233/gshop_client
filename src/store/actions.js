@@ -14,7 +14,8 @@ import {
 	RECEIVE_SHOP_INFO,
 	INCREMENT_FOOD_COUNT,
 	DECREMENT_FOOD_COUNT,
-	CLEAR_CART
+	CLEAR_CART,
+	RECEIVE_SEARCH_SHOP,
 } from './mutation-types'
 
 import {
@@ -25,7 +26,8 @@ import {
 	reqLogout,
 	reqShopGoods,
 	reqShopRatings,
-	reqShopInfo
+	reqShopInfo,
+	reqSearchShop,
 } from '../api'
 
 export default {
@@ -130,6 +132,17 @@ export default {
 		commit(CLEAR_CART)
 	},
 	
+	// 异步获取搜索到的商家列表
+	async searchShops ({commit,state},keyword){
+		// 发送ajax请求
+		const geohash = state.latitude + ',' + state.longitude
+		const result = await reqSearchShop(geohash,keyword)
+		// 提交一个mutation
+		if(result.code===0){
+			const searchShops = result.data
+			commit(RECEIVE_SEARCH_SHOP,{searchShops})
+		}
+	},
 	
 
 }
